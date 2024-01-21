@@ -1,23 +1,20 @@
 package br.com.stoom.store.controller;
 
 import br.com.stoom.store.business.interfaces.ICategoryBO;
-import br.com.stoom.store.dto.BrandDataOutputDTO;
+import br.com.stoom.store.business.interfaces.IProductBO;
 import br.com.stoom.store.dto.CategoryDataInputDTO;
 import br.com.stoom.store.dto.CategoryDataOutputDTO;
+import br.com.stoom.store.dto.ProductDataOutputDTO;
 import br.com.stoom.store.model.Category;
+import br.com.stoom.store.model.Product;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -25,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
 
     private final ICategoryBO categoryService;
+
+    private final IProductBO productBO;
 
     @GetMapping
     public ResponseEntity<List<CategoryDataOutputDTO>> findAllCategories() {
@@ -37,6 +36,30 @@ public class CategoryController {
                 categories
                         .stream()
                         .map(c -> new CategoryDataOutputDTO(c.getId(), c.getName())).collect(Collectors.toList())
+        );
+    }
+
+    @GetMapping("/{categoryId}/products")
+    public ResponseEntity<List<ProductDataOutputDTO>> findAllProductsByCategoryId(@PathVariable Long categoryId) {
+        List<Product> products = productBO.findAllByCategoryId(categoryId);
+
+        if (products.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(
+                products.stream()
+                        .map(
+                                p -> new ProductDataOutputDTO(
+                                        p.getId(),
+                                        p.getSku(),
+                                        p.getName(),
+                                        p.getDescription(),
+                                        p.getPrice(),
+                                        p.getCategory().getId(),
+                                        p.getBrand().getId()
+                                )
+                        )
+                        .collect(Collectors.toList())
         );
     }
 

@@ -1,22 +1,20 @@
 package br.com.stoom.store.controller;
 
 import br.com.stoom.store.business.interfaces.IBrandBO;
+import br.com.stoom.store.business.interfaces.IProductBO;
 import br.com.stoom.store.dto.BrandDataInputDTO;
 import br.com.stoom.store.dto.BrandDataOutputDTO;
+import br.com.stoom.store.dto.ProductDataOutputDTO;
 import br.com.stoom.store.model.Brand;
+import br.com.stoom.store.model.Product;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/brands")
@@ -24,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class BrandController {
 
     private final IBrandBO brandService;
+
+    private final IProductBO productBO;
 
     @PostMapping
     public ResponseEntity<BrandDataOutputDTO> createBrand(@RequestBody @Valid BrandDataInputDTO brandData) {
@@ -47,6 +47,28 @@ public class BrandController {
                         .map(b -> new BrandDataOutputDTO(b.getId(), b.getName()))
                         .collect(Collectors.toList())
         );
+    }
+
+    @GetMapping("/{brandId}/products")
+    public ResponseEntity<List<ProductDataOutputDTO>> findAllProductsByBrandId(@PathVariable Long brandId) {
+        List<Product> products = productBO.findAllByBrandId(brandId);
+
+        if (products.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        List<ProductDataOutputDTO> productsResponses = products.stream()
+                .map(p -> new ProductDataOutputDTO(
+                        p.getId(),
+                        p.getSku(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getPrice(),
+                        p.getCategory().getId(),
+                        p.getBrand().getId()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(productsResponses);
     }
 
     @PatchMapping("/{brandId}/disable")

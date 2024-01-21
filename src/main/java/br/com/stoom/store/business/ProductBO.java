@@ -6,11 +6,17 @@ import br.com.stoom.store.model.Product;
 import br.com.stoom.store.repository.BrandRepository;
 import br.com.stoom.store.repository.CategoryRepository;
 import br.com.stoom.store.repository.ProductRepository;
-import br.com.stoom.store.repository.specifications.ProductSpecifications;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static br.com.stoom.store.repository.specifications.ProductSpecifications.activeBrand;
+import static br.com.stoom.store.repository.specifications.ProductSpecifications.activeCategory;
+import static br.com.stoom.store.repository.specifications.ProductSpecifications.byBrandId;
+import static br.com.stoom.store.repository.specifications.ProductSpecifications.byCategoryId;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
@@ -23,12 +29,29 @@ public class ProductBO implements IProductBO {
     private final BrandRepository brandRepository;
 
     @Override
-    public List<Product> findAll(String category, String brand) {
-        Specification<Product> specs = Specification
-                .where(ProductSpecifications.byCategory(category))
-                .and(Specification.where(ProductSpecifications.byBrand(brand)));
+    public List<Product> findAll(Long categoryId, Long brandId) {
+        Specification<Product> specs = where(byCategoryId(categoryId))
+                .and(byBrandId(brandId))
+                .and(activeBrand())
+                .and(activeCategory());
 
         return productRepository.findAll(specs);
+    }
+
+    @Override
+    public List<Product> findAllByCategoryId(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId))
+            throw new NotFoundException("Category not found");
+
+        return productRepository.findAllByCategoryIdAndActive(categoryId);
+    }
+
+    @Override
+    public List<Product> findAllByBrandId(Long brandId) {
+        if (!brandRepository.existsById(brandId))
+            throw new NotFoundException("Brand not found");
+
+        return productRepository.findAllByBrandIdAndActive(brandId);
     }
 
     @Override
@@ -36,9 +59,20 @@ public class ProductBO implements IProductBO {
         if (!categoryRepository.existsById(product.getCategory().getId()))
             throw new NotFoundException("Category not found");
 
-        else if (!brandRepository.existsById(product.brand.getId()))
+        else if (!brandRepository.existsById(product.getBrand().getId()))
             throw new NotFoundException("Brand not found");
 
         return productRepository.save(product);
     }
+
+    @Override
+    public void toggleProduct(Long productId, boolean active) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
+
+        product.setActive(active);
+
+        productRepository.save(product);
+    }
+
 }

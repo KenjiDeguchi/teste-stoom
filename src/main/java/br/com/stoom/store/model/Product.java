@@ -44,10 +44,10 @@ public class Product {
     private Boolean active = true;
 
     @ManyToOne
-    public Category category;
+    private Category category;
 
     @ManyToOne
-    public Brand brand;
+    private Brand brand;
 
     public Product(String sku, String name, String description, BigDecimal price) {
         this.sku = sku;
