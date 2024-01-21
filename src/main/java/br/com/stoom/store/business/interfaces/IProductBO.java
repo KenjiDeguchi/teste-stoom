@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IProductBO {
 
-    List<Product> findAll();
+    List<Product> findAll(String category, String brand);
+
+    Product save(Product product);
 
 }
