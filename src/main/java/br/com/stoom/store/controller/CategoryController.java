@@ -7,6 +7,7 @@ import br.com.stoom.store.model.Category;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +62,13 @@ public class CategoryController {
     @PatchMapping("/{categoryId}/enable")
     public ResponseEntity<Void> enableCategory(@PathVariable Long categoryId) {
         categoryService.toggleCategory(categoryId, true);
+
+        return noContent().build();
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) {
+        categoryService.delete(categoryId);
 
         return noContent().build();
     }

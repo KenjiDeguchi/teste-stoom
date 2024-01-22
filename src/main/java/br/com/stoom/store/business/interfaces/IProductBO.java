@@ -16,4 +16,6 @@ public interface IProductBO {
 
     void toggleProduct(Long productId, boolean active);
 
+    void delete(Long id);
+
 }

@@ -45,4 +45,11 @@ public class CategoryBO implements ICategoryBO {
         categoryRepository.save(category);
     }
 
+    @Override
+    public void delete(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+
+        categoryRepository.delete(category);
+    }
 }

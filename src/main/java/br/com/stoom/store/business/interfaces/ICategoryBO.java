@@ -13,4 +13,6 @@ public interface ICategoryBO {
 
     void toggleCategory(Long id, boolean active);
 
+    void delete(Long id);
+
 }

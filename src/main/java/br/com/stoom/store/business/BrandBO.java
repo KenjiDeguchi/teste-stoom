@@ -43,4 +43,11 @@ public class BrandBO implements IBrandBO {
         brandRepository.save(brand);
     }
 
+    @Override
+    public void delete(Long id) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Brand not found"));
+
+        brandRepository.delete(brand);
+    }
 }

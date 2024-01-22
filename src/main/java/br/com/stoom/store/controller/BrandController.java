@@ -7,6 +7,7 @@ import br.com.stoom.store.model.Brand;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +62,13 @@ public class BrandController {
     @PatchMapping("/{brandId}/enable")
     public ResponseEntity<Void> enableBrand(@PathVariable Long brandId) {
         brandService.toggleBrand(brandId, true);
+
+        return noContent().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteBrand(@PathVariable Long brandId) {
+        brandService.delete(brandId);
 
         return noContent().build();
     }

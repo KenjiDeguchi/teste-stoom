@@ -12,6 +12,7 @@ import br.com.stoom.store.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -37,7 +42,7 @@ public class ProductController {
 
     private final IBrandBO brandService;
 
-    private final ModelMapper modelMapper;
+    private final ModelMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<ProductDataOutputDTO>> findAll(
@@ -49,7 +54,7 @@ public class ProductController {
         if (products.isEmpty())
             return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(products.stream().map(p -> modelMapper.map(p, ProductDataOutputDTO.class)).collect(Collectors.toList()));
+        return ok(products.stream().map(p -> mapper.map(p, ProductDataOutputDTO.class)).collect(Collectors.toList()));
     }
 
     @PostMapping
@@ -68,26 +73,29 @@ public class ProductController {
                 )
         );
 
-        return ResponseEntity.created(URI.create("/api/products/" + product.getId()))
-                .body(modelMapper.map(product, ProductCreatedOutputDTO.class));
+        return created(URI.create("/api/products/" + product.getId()))
+                .body(mapper.map(product, ProductCreatedOutputDTO.class));
     }
 
     @PatchMapping("/{productId}/disable")
     public ResponseEntity<Void> disableProduct(@PathVariable Long productId) {
         productService.toggleProduct(productId, false);
 
-        return ResponseEntity
-                .noContent()
-                .build();
+        return noContent().build();
     }
 
     @PatchMapping("/{productId}/enable")
     public ResponseEntity<Void> enableProduct(@PathVariable Long productId) {
         productService.toggleProduct(productId, true);
 
-        return ResponseEntity
-                .noContent()
-                .build();
+        return noContent().build();
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.delete(productId);
+
+        return noContent().build();
     }
 
 }

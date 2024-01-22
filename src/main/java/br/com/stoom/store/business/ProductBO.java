@@ -77,4 +77,11 @@ public class ProductBO implements IProductBO {
         productRepository.save(product);
     }
 
+    @Override
+    public void delete(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
+
+        productRepository.delete(product);
+    }
 }

@@ -13,4 +13,6 @@ public interface IBrandBO {
 
     void toggleBrand(Long id, boolean active);
 
+    void delete(Long id);
+
 }

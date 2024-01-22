@@ -64,7 +64,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Brinquedos\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Armas\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,7 +107,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "52"
 								}
 							]
 						}
@@ -135,7 +135,35 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/categories/:id/enable",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								":id",
+								"enable"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
 								}
 							]
 						}
@@ -188,7 +216,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "4"
+									"value": "1"
 								}
 							]
 						}
@@ -202,7 +230,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Iron King\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Glock\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -245,7 +273,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "4"
+									"value": "52"
 								}
 							]
 						}
@@ -279,6 +307,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/brands/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"brands",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -292,7 +347,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"sku\": \"Mot/BR-44/Iro/Gre\",\r\n    \"name\": \"Camisa polo wearh verde\",\r\n    \"description\": \"Camiseta polo wear verde de algodão massa\",\r\n    \"price\": 19.90,\r\n    \"categoryId\": 2,\r\n    \"brandId\": 4\r\n}",
+							"raw": "{\r\n    \"sku\": \"Mot/BR-44/ASU/ROG\",\r\n    \"name\": \"Placa mae ASUS ROG H310\",\r\n    \"description\": \"Placa mae gamer ASUS ROG H310 Intel\",\r\n    \"price\": 299.90,\r\n    \"categoryId\": 3,\r\n    \"brandId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,7 +375,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/products?brand=1",
+							"raw": "http://localhost:8080/api/products?category=2&brand=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -331,6 +386,10 @@
 								"products"
 							],
 							"query": [
+								{
+									"key": "category",
+									"value": "2"
+								},
 								{
 									"key": "brand",
 									"value": "1"
@@ -361,7 +420,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "1"
 								}
 							]
 						}
@@ -374,7 +433,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/products/:id/disable",
+							"raw": "http://localhost:8080/api/products/:id/enable",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -384,12 +443,39 @@
 								"api",
 								"products",
 								":id",
-								"disable"
+								"enable"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "52"
 								}
 							]
 						}
