@@ -14,6 +14,7 @@ import java.util.List;
 
 import static br.com.stoom.store.repository.specifications.ProductSpecifications.activeBrand;
 import static br.com.stoom.store.repository.specifications.ProductSpecifications.activeCategory;
+import static br.com.stoom.store.repository.specifications.ProductSpecifications.activeProduct;
 import static br.com.stoom.store.repository.specifications.ProductSpecifications.byBrandId;
 import static br.com.stoom.store.repository.specifications.ProductSpecifications.byCategoryId;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -32,6 +33,7 @@ public class ProductBO implements IProductBO {
     public List<Product> findAll(Long categoryId, Long brandId) {
         Specification<Product> specs = where(byCategoryId(categoryId))
                 .and(byBrandId(brandId))
+                .and(activeProduct())
                 .and(activeBrand())
                 .and(activeCategory());
 
