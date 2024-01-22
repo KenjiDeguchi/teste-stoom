@@ -1,10 +1,10 @@
-package br.com.stoom.store.dto;
+package br.com.stoom.store.dto.input;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class BrandDataInputDTO {
+public class CategoryDataInputDTO {
     @NotBlank
     private String name;
 }

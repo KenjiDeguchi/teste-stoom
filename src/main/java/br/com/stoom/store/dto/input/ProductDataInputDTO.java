@@ -1,4 +1,4 @@
-package br.com.stoom.store.dto;
+package br.com.stoom.store.dto.input;
 
 import java.math.BigDecimal;
 import javax.validation.constraints.NotBlank;

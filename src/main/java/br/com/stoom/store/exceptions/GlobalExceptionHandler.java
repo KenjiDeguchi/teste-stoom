@@ -1,6 +1,6 @@
 package br.com.stoom.store.exceptions;
 
-import br.com.stoom.store.dto.ErrorOutputDTO;
+import br.com.stoom.store.dto.output.ErrorOutputDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

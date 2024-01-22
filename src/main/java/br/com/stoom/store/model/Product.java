@@ -49,11 +49,13 @@ public class Product {
     @ManyToOne
     private Brand brand;
 
-    public Product(String sku, String name, String description, BigDecimal price) {
+    public Product(String sku, String name, String description, BigDecimal price, Category category, Brand brand) {
         this.sku = sku;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.category = category;
+        this.brand = brand;
     }
 
     @Override

@@ -1,12 +1,10 @@
-package br.com.stoom.store.dto;
+package br.com.stoom.store.dto.output;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 public class ProductDataOutputDTO {
     private Long id;
     private String sku;
